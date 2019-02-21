@@ -1,0 +1,73 @@
+<template>
+  <div>
+    <h1>Quiz Pakrampak</h1>
+  </div>
+  <div id="root">
+    <h1 :class="[score > 1 ? 'diatasKKM' : 'dibawahKKM']">Nilai : {{ score }}</h1>
+    <h2 v-if="score > 1">Berhasil, kamu keren</h2>
+    <h2 v-else>Gagal, ayo jangan patah semangat</h2>
+    <div v-for="(soal, indexsoal) in questions">
+      <h2>No {{indexsoal+1}}. {{soal.deskripsi}} </h2>
+      <div v-for="(pilihans, indexpiilhan) in soal.pilihan">
+        <input type="radio" @click="checkAnswer(indexsoal, indexpiilhan)" :value="pilihans[0]" :name="indexsoal">
+        <span v-text="pilihans[0]"></span>
+      </div>
+    </div>
+
+    <h3>Jawaban Benar : </h3>
+    <ul>
+      <li v-for="no_soal in jawabanbenar">No. {{ no_soal+1 }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default{
+  name: 'User',
+  props: [
+    'Name'
+  ],
+  data () {
+    return {
+      el: 'root',
+      materis: [
+        {
+          soal: [
+            {
+              id: 1,
+              soal: 'ASU ADALAH?!!'
+            }
+          ]
+        }
+      ],
+      score: 0,
+      jawabanbenar : [],
+      jawabansalah : [],
+      questions : [
+        {
+          deskripsi : "Siapakah namaku?",
+          pilihan : [
+            ["Agy", true],
+            ["Tuti"],
+            ["Baskoro"],
+            ["Bambang"]
+          ]
+        },
+        {
+          deskripsi : "Dimana aku tinggal?",
+          pilihan : [
+            ["Solo"],
+            ["Balikpapan"],
+            ["Cimahi", true],
+            ["Papua Nugini"]
+          ]
+        }
+      ]
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

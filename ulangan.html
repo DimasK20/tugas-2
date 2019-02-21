@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .diatasKKM{
+        color: green;
+      }
+      .dibawahKKM{
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <h1 :class="[score > 1 ? 'diatasKKM' : 'dibawahKKM']">Nilai : {{ score }}</h1>
+      <h2 v-if="score > 1">Berhasil, kamu keren</h2>
+      <h2 v-else>Gagal, ayo jangan patah semangat</h2>
+      <div v-for="(soal, indexsoal) in questions">
+        <h2>No {{indexsoal+1}}. {{soal.deskripsi}} </h2>
+        <div v-for="(pilihans, indexpiilhan) in soal.pilihan">
+          <input type="radio" @click="checkAnswer(indexsoal, indexpiilhan)" :value="pilihans[0]" :name="indexsoal">
+          <span v-text="pilihans[0]"></span>
+        </div>
+      </div>
+
+      <h3>Jawaban Benar : </h3>
+      <ul>
+        <li v-for="no_soal in jawabanbenar">No. {{ no_soal+1 }}</li>
+      </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+
+    var app = new Vue({
+      el: '#root',
+      data: {
+        score: 0,
+        jawabanbenar : [],
+        jawabansalah : [],
+        questions : [
+          {
+            deskripsi : "Siapakah namaku?",
+            pilihan : [
+              ["Agy", true],
+              ["Tuti"],
+              ["Baskoro"],
+              ["Bambang"]
+            ]
+          },
+          {
+            deskripsi : "Dimana aku tinggal?",
+            pilihan : [
+              ["Solo"],
+              ["Balikpapan"],
+              ["Cimahi", true],
+              ["Papua Nugini"]
+            ]
+          }
+        ]
+      },
+
+      methods: {
+
+        checkAnswer(indexsoal, indexpiilhan) {
+          if(this.questions[indexsoal].pilihan[indexpiilhan][1]){
+            if(this.jawabanbenar.indexOf(indexsoal) == -1){
+              this.jawabanbenar.push(indexsoal);
+            }
+            if(this.jawabansalah.indexOf(indexsoal) != -1){
+              this.jawabansalah.splice(this.jawabansalah.indexOf(indexsoal),1);
+            }
+          }else{
+            if(this.jawabanbenar.indexOf(indexsoal) != -1){
+              this.jawabanbenar.splice(this.jawabanbenar.indexOf(indexsoal),1);
+              this.jawabansalah.push(indexsoal);
+            }else if(this.jawabansalah.indexOf(indexsoal) != -1){
+
+            }else{
+              this.jawabansalah.push(indexsoal);
+            }
+          }
+          this.score = this.jawabanbenar.length;
+        }
+      }
+      //
+      // mounted() {
+      //   document.querySelector('#button').addEventListener('click', () => {
+      //     let name = document.querySelector("#input");
+      //     app.names.push(name.value);
+      //     name.value = "";
+      //   });
+      // }
+    });
+
+
+    </script>
+  </body>
+</html>
